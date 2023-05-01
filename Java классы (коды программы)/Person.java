@@ -102,7 +102,6 @@ public class Person extends JComponent implements KeyListener, ActionListener {
             grass_sp = sprite[2][1].getImage();
 
         }
-
     }
 
     public void setX(int x) {

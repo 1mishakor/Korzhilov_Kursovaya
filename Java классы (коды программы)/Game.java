@@ -178,34 +178,34 @@ public class Game extends JComponent implements KeyListener, ActionListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-
         person.keyPressed(e);
-
-        if (person.x <= 0) {
-            person.speedL = 0;
-        } else if (person.x + person.w >= fon2.wf - 50) {
-            person.speedR = 0;
-        } else if (person.x >= px + 100 && fon3.x + fon3.wf != fon2.wf && fon3.x + fon3.wf >= fon2.wf) {
-            fon2.x -= speed;
-            fon3.x -= speed;
-            if ((fon2.x % 200) == 0) {
-                fon1.x -= speed;
+        if (e.getKeyCode() == VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+            if (person.x <= 0) {
+                person.speedL = 0;
+            } else if (person.x + person.w >= fon2.wf) {
+                person.speedR = 0;
+            } else if (person.x >= px + 100 && fon3.x + fon3.wf != fon2.wf && fon3.x + fon3.wf >= fon2.wf) {
+                fon2.x -= speed;
+                fon3.x -= speed;
+                if ((fon2.x % 200) == 0) {
+                    fon1.x -= speed;
+                }
+                fier.x -= speed;
+                tree.x -= speed;
+                person.speedR = 0;
+            } else if (person.x <= px - 100 && fon2.x != 0 && fon2.x <= 0) {
+                fon2.x += speed;
+                fon3.x += speed;
+                if ((fon2.x % 200) == 0) {
+                    fon1.x += speed;
+                }
+                fier.x += speed;
+                tree.x += speed;
+                person.speedL = 0;
+            } else {
+                person.speedL = speed;
+                person.speedR = speed;
             }
-            fier.x -= speed;
-            tree.x -= speed;
-            person.speedR = 0;
-        } else if (person.x <= px - 100 && fon2.x != 0 && fon2.x <= 0) {
-            fon2.x += speed;
-            fon3.x += speed;
-            if ((fon2.x % 200) == 0) {
-                fon1.x += speed;
-            }
-            fier.x += speed;
-            tree.x += speed;
-            person.speedL = 0;
-        } else {
-            person.speedL = speed;
-            person.speedR = speed;
         }
         if (e.getKeyCode() == VK_ESCAPE) {
             f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
