@@ -14,9 +14,8 @@ public class ObjectGame extends JComponent implements ActionListener {
     public int h;
     public int w;
     int delay;
-    Rectangle rectangle;
+
     public Timer t;
-    Thread thread;
 
     public ObjectGame(ImageIcon[] sprite, int delay, int x, int y, int w, int h) {
         this.delay = delay;
@@ -24,7 +23,6 @@ public class ObjectGame extends JComponent implements ActionListener {
         this.y = y;
         this.h = h;
         this.w = w;
-        rectangle = new Rectangle(x, y, w, h);
         t = new Timer(delay, this);
         this.sprite = sprite;
         grass_sp = sprite[0].getImage();
@@ -34,18 +32,13 @@ public class ObjectGame extends JComponent implements ActionListener {
         Graphics2D g1 = (Graphics2D) g;
         g1.drawImage(grass_sp, x, y, w, h, null);
 
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (i > sprite.length - 1) {
-                    i = 0;
-                }
-                grass_sp = sprite[i].getImage();
-                i++;
-                t.start();
-            }
-        });
-        thread.start();
+        if (i > sprite.length - 1) {
+            i = 0;
+        }
+        grass_sp = sprite[i].getImage();
+        i++;
+        t.start();
+
     }
 
     @Override

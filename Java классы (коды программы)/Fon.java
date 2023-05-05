@@ -48,11 +48,11 @@ public class Fon {
     public void setWf(int wf) {
         this.wf = wf;
     }
-    public int setHf() {
+    public int getHf() {
        return hf;
     }
 
-    public int setWf() {
+    public int getWf() {
         return wf;
     }
 

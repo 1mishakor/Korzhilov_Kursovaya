@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-
 import static java.awt.event.KeyEvent.*;
 
 public class Game extends JComponent implements KeyListener, ActionListener {
@@ -70,7 +69,7 @@ public class Game extends JComponent implements KeyListener, ActionListener {
         f.setExtendedState(JFrame.MAXIMIZED_BOTH);
         f.setUndecorated(true);
 
-        person = new Person(sprite, speed, 60, (int) (570 / (1920 / screenSize.getWidth())), (int) (750 / (1080 / screenSize.getHeight())), (int) (170 / (1920 / screenSize.getWidth())), (int) (220 / (1080 / screenSize.getHeight())));
+        person = new Person(sprite, speed, 0, (int) (570 / (1920 / screenSize.getWidth())), (int) (750 / (1080 / screenSize.getHeight())), (int) (170 / (1920 / screenSize.getWidth())), (int) (220 / (1080 / screenSize.getHeight())));
         tree = new ObjectGame(TreeSP, 0, (int) (120 / (1920 / screenSize.getWidth())), (int) (36 / (1080 / screenSize.getHeight())), (int) ((200 * 3 + 270) / (1920 / screenSize.getWidth())), (int) ((200 * 3 + 300) / (1080 / screenSize.getHeight())));
         fier = new ObjectGame(FierSP, 1, (int) (700 / (1920 / screenSize.getWidth())), (int) (851 / (1080 / screenSize.getHeight())), (int) (85 / (1920 / screenSize.getWidth())), (int) (85 / (1080 / screenSize.getHeight())));
 
@@ -100,14 +99,6 @@ public class Game extends JComponent implements KeyListener, ActionListener {
     }
 
     public void paint(Graphics g) {
-
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                t.start();
-            }
-        });
-
         Graphics2D g1 = (Graphics2D) g;
         fon0.paint(g1);
         oblako1.paint(g1);
@@ -158,11 +149,10 @@ public class Game extends JComponent implements KeyListener, ActionListener {
             oblako7.setX(oblako7.x + 2);
         }
 
-        thread.start();
-
         tree.paint(g1);
         fier.paint(g1);
         person.paint(g1);
+        t.start();
     }
 
     @Override
@@ -178,27 +168,27 @@ public class Game extends JComponent implements KeyListener, ActionListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+
         person.keyPressed(e);
+
         if (e.getKeyCode() == VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
             if (person.x <= 0) {
                 person.speedL = 0;
             } else if (person.x + person.w >= fon2.wf) {
                 person.speedR = 0;
-            } else if (person.x >= px + 100 && fon3.x + fon3.wf != fon2.wf && fon3.x + fon3.wf >= fon2.wf) {
+            } else if (person.x >= px + 100 && fon3.x + fon3.wf > fon2.wf) {
                 fon2.x -= speed;
                 fon3.x -= speed;
-                if ((fon2.x % 200) == 0) {
-                    fon1.x -= speed;
-                }
+                fon1.x -= speed/15;
                 fier.x -= speed;
                 tree.x -= speed;
                 person.speedR = 0;
-            } else if (person.x <= px - 100 && fon2.x != 0 && fon2.x <= 0) {
+            } else if (person.x <= px - 100 && fon2.x < 0) {
                 fon2.x += speed;
                 fon3.x += speed;
-                if ((fon2.x % 200) == 0) {
-                    fon1.x += speed;
-                }
+
+                fon1.x += speed/15;
+
                 fier.x += speed;
                 tree.x += speed;
                 person.speedL = 0;
@@ -207,6 +197,7 @@ public class Game extends JComponent implements KeyListener, ActionListener {
                 person.speedR = speed;
             }
         }
+
         if (e.getKeyCode() == VK_ESCAPE) {
             f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
         }
@@ -217,3 +208,4 @@ public class Game extends JComponent implements KeyListener, ActionListener {
         person.keyReleased(e);
     }
 }
+

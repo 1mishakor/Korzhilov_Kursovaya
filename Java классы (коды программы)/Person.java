@@ -11,8 +11,8 @@ import static java.awt.event.KeyEvent.*;
 
 public class Person extends JComponent implements KeyListener, ActionListener {
     public boolean bool = true;
-    public int i;
-    public int j;
+    private int i;
+    private int j;
     ImageIcon[][] sprite;
     Image grass_sp;
     public int x;
@@ -23,8 +23,8 @@ public class Person extends JComponent implements KeyListener, ActionListener {
     public int speed;
     public int speedL = speed;
     public int speedR = speed;
-    Rectangle rectangle;
-    Thread thread;
+
+    public Timer t;
 
     public Person(ImageIcon[][] sprite, int speed, int delay, int x, int y, int w, int h) {
         this.sprite = sprite;
@@ -34,41 +34,38 @@ public class Person extends JComponent implements KeyListener, ActionListener {
         this.y = y;
         this.h = h;
         this.w = w;
+        t = new Timer(delay, this);
         grass_sp = sprite[2][0].getImage();
-        rectangle = new Rectangle(x, y, w, h);
     }
 
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g1 = (Graphics2D) g;
-        g1.drawImage(grass_sp, rectangle.x, rectangle.y, rectangle.width, rectangle.height, null);
+        g1.drawImage(grass_sp, x, y, w, h, null);
+        t.start();
     }
 
     class Sides {
         public void Left() {
             bool = false;
             x -= speedL;
-            rectangle.setLocation(rectangle.x - speedL, rectangle.y);
             i = 1;
             j = j + 1;
             if (j > sprite[i].length - 1) {
                 j = 0;
             }
-            for (int del = 0; del <= delay; del++)
-                grass_sp = sprite[i][j].getImage();
+            grass_sp = sprite[i][j].getImage();
         }
 
         public void Right() {
             bool = true;
             x += speedR;
-            rectangle.setLocation(rectangle.x + speedR, rectangle.y);
             i = 0;
             j = j + 1;
             if (j > sprite[i].length - 1) {
                 j = 0;
             }
-            for (int del = 0; del <= delay; del++)
-                grass_sp = sprite[i][j].getImage();
+            grass_sp = sprite[i][j].getImage();
         }
     }
 
